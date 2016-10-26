@@ -1,0 +1,32 @@
+#!/usr/bin/python
+# The following defines the runfile and runner. This can also include parameters if needed.
+# A runfile is responsible for executing a job and for updating its status: from queued,
+# to running, to done.
+
+
+# local execution:
+queueName = 'Local'
+run_command = '/bin/sh'
+runfile = """
+cd {rundir}
+rm queued
+echo ' ' > running
+""" + parameter_processing_command + "\n" + """
+mpiexec -np """ + str(numThreadsPerProcess) + ' ' + executable_name + " " +\
+param_file_name + " > execution_log.txt\n" +\
+post_processing_command + """
+rm running
+echo ' ' > done
+"""
+
+
+def process_runfile(s, pdict, rundir):
+    return s.format(**pdict)
+
+
+def process_runfile(s, pdict, rundir):
+    pdict = pdict.copy()
+    pdict['rundir'] = rundir
+    return s.format(**pdict)
+
+queue_jobcount_command = "echo 0"

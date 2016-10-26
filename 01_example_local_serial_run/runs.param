@@ -1,0 +1,57 @@
+#!/usr/bin/python
+from os import environ, getcwd
+import numpy as np
+
+# Read in the general parameters:
+execfile('general.param')
+
+params = []
+
+# All possible combinations of parameters (the Cartesian product) will be run.
+
+# Parameter set 1:
+params.append({
+    # General parameters:
+    'comment': ['first_set_of_test_runs'],
+    'A': [1.0],
+    'epsilon': [0.1, 0.2],
+    'mu': myarange(0, 4, 0.5),
+
+    # Other parameters:
+    'excludedparam': [-999],
+    'a': [50.0],
+    'b': [0.0],
+})
+
+# You can put multiple parameter sets in the same file, to avoid cartesian
+# products of everything. For example, try uncommenting the following:
+# # Parameter set 2:
+# params.append({
+#     # General parameters:
+#     'comment': ['second_set_of_test_runs'],
+#     'A': [2.0],
+#     'epsilon': [0.1, 0.2, 0.3, 0.4],
+#     'mu': myarange(0, 4, 0.5),
+#
+#     # Other parameters:
+#     'excludedparam': [-777],
+#     'a': [50.0],
+#     'b': [0.0],
+# })
+
+prefix = "myprefix"
+numConcurrentProcesses = 4  # Local parallel execution of serial code.
+executable_name = 'python ' + execDir + '/example_serial_application.py'
+secondary_keys = ['mu']  # These are grouped together in subdirectories.
+excluded_keys = ['excludedparam']  # These are excluded from directory names.
+
+# Read in the execution parameters:
+execfile('execution.param')
+
+# The following allows the creation of derived parameters by post-processing
+# functions. This is not needed in the example, where the parameter file is
+# itself a python script, but can be useful in general.
+# To use, add items of the form ['new_key', func_of_pdict].
+post_data = [
+    ['postderived', lambda pdict: -0.5 * pdict['epsilon']],
+]
