@@ -1,9 +1,10 @@
 #!/usr/bin/python
 from os import environ, getcwd
 import numpy as np
+import imp
 
 # Read in the general parameters:
-execfile('general.param')
+exec(open('general.param').read())
 
 params = []
 
@@ -46,7 +47,7 @@ secondary_keys = ['mu']  # These are grouped together in subdirectories.
 excluded_keys = ['excludedparam']  # These are excluded from directory names.
 
 # Read in the execution parameters:
-execfile('execution.param')
+exec(open('execution.param').read())
 
 # The following allows the creation of derived parameters by post-processing
 # functions. This is not needed in the example, where the parameter file is

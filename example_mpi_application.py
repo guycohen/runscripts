@@ -14,9 +14,9 @@ rank = comm.Get_rank()
 # Read in the parameter file:
 if rank == 0:
     if (len(argv) == 1):
-        execfile('run.param')
+        exec(open('run.param').read())
     elif (len(argv) == 2):
-        execfile(argv[1])
+        exec(open(argv[1]).read())
 else:
     A = None
     epsilon = None
@@ -37,4 +37,4 @@ if rank == 0:
     f.write(str(sum(vals)) + '\n')
 
 # Print something:
-print "Finished running on rank %d!" % rank
+print("Finished running on rank %d!" % rank)
